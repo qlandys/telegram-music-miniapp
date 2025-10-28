@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Музыкальный мини-приложение</title>
+    <title>Музыкальное мини-приложение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -38,16 +44,16 @@
 
           <section class="results" id="results">
             <p class="results__placeholder">
-              Результаты появятся здесь. Выбери трек, чтобы отправить его боту.
+              Здесь появятся результаты поиска. Выбери трек, чтобы отправить его боту.
             </p>
           </section>
         </section>
 
         <section class="view" data-view="saved">
           <div class="placeholder">
-            <h2 class="placeholder__title">Сохранённые треки</h2>
+            <h2 class="placeholder__title">Избранные треки</h2>
             <p class="placeholder__text">
-              Здесь появятся любимые треки, которые ты отметишь внутри мини-приложения.
+              Здесь будут те треки, что ты добавишь в коллекцию мини-приложения.
             </p>
           </div>
         </section>
@@ -56,7 +62,7 @@
           <div class="placeholder">
             <h2 class="placeholder__title">Профиль и настройки</h2>
             <p class="placeholder__text">
-              Позже здесь появятся персональные настройки, переключатели тем и качества стриминга.
+              Позже добавим персональные настройки, темы и выбор качества стриминга.
             </p>
           </div>
         </section>
@@ -64,12 +70,7 @@
 
       <footer class="app__footer">
         <nav class="nav">
-          <button
-            class="nav-item"
-            type="button"
-            data-view-target="saved"
-            data-lottie="./animations/saved.json"
-          >
+          <button class="nav-item" type="button" data-view-target="saved" data-lottie="./animations/saved.json">
             <span class="nav-item__icon"></span>
             <span class="nav-item__label">Избранное</span>
           </button>
@@ -93,7 +94,7 @@
           </button>
         </nav>
         <p class="app__license">
-          Анимации защищены авторским правом. Укажи здесь лицензию твоего пакета JSON.
+          Анимации защищены авторским правом. Укажи здесь лицензию своего JSON-пака.
         </p>
       </footer>
     </div>

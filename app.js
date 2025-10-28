@@ -1,9 +1,11 @@
 const tg = window.Telegram?.WebApp;
 const NAV_FALLBACK_ICONS = {
-  saved: "★",
+  saved: "📁",
   search: "🔍",
   profile: "⚙",
 };
+
+const navAnimations = new Map();
 
 const state = {
   user: tg?.initDataUnsafe?.user ?? null,
@@ -112,7 +114,7 @@ function renderResults() {
     const placeholder = document.createElement("p");
     placeholder.className = "results__placeholder";
     placeholder.textContent =
-      "Пока ничего нет. Введи запрос и нажми «Найти».";
+      "Результатов пока нет. Введи запрос и нажми «Найти».";
     container.appendChild(placeholder);
     return;
   }
@@ -193,6 +195,20 @@ function greetUser() {
   }! Найди трек и отправь его боту.`;
 }
 
+function playNavAnimation(target) {
+  navAnimations.forEach((animation, key) => {
+    if (!animation) {
+      return;
+    }
+    animation.stop();
+    animation.goToAndStop(0, true);
+    if (key === target) {
+      const frames = animation.totalFrames ?? 120;
+      animation.playSegments([0, frames], true);
+    }
+  });
+}
+
 function setView(view) {
   state.view = view;
   document
@@ -206,6 +222,7 @@ function setView(view) {
       const isActive = navItem.dataset.viewTarget === view;
       navItem.classList.toggle("nav-item--active", isActive);
     });
+  playNavAnimation(view);
   if (view !== "search" && tg) {
     tg.MainButton.hide();
   }
@@ -219,13 +236,20 @@ function initNavigation() {
     const lottieSrc = item.dataset.lottie;
     if (window.lottie && lottieSrc) {
       try {
-        window.lottie.loadAnimation({
+        const animation = window.lottie.loadAnimation({
           container: iconContainer,
           renderer: "svg",
-          loop: true,
-          autoplay: true,
+          loop: false,
+          autoplay: false,
           path: lottieSrc,
         });
+        animation.addEventListener("DOMLoaded", () => {
+          animation.goToAndStop(0, true);
+          if (target === state.view) {
+            playNavAnimation(target);
+          }
+        });
+        navAnimations.set(target, animation);
       } catch (error) {
         console.warn("Failed to init lottie animation:", error);
       }
@@ -240,8 +264,12 @@ function initNavigation() {
       setView(target);
       if (target === "search") {
         updateMainButton();
+      } else {
+        tg?.MainButton.hide();
       }
     });
+
+    item.addEventListener("mouseenter", () => playNavAnimation(target));
   });
 
   setView(state.view);
