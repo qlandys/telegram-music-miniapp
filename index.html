@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Музыкальный мини-приложение</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <main class="app__main">
+        <header class="app__header">
+          <div class="app__logo" aria-hidden="true">&#9835;</div>
+          <div>
+            <h1 class="app__title">Музыка из YouTube</h1>
+            <p class="app__subtitle">
+              Слушай, ищи и сохраняй любимые треки прямо внутри Telegram.
+            </p>
+          </div>
+        </header>
+
+        <section class="view view--active" data-view="search">
+          <section class="search">
+            <label class="search__label" for="query">Что включаем?</label>
+            <div class="search__bar">
+              <input
+                id="query"
+                class="search__input"
+                type="text"
+                placeholder="Например, Скриптонит — Положение"
+                autocomplete="off"
+              />
+              <button id="searchButton" class="search__button">Найти</button>
+            </div>
+          </section>
+
+          <section class="results" id="results">
+            <p class="results__placeholder">
+              Результаты появятся здесь. Выбери трек, чтобы отправить его боту.
+            </p>
+          </section>
+        </section>
+
+        <section class="view" data-view="saved">
+          <div class="placeholder">
+            <h2 class="placeholder__title">Сохранённые треки</h2>
+            <p class="placeholder__text">
+              Здесь появятся любимые треки, которые ты отметишь внутри мини-приложения.
+            </p>
+          </div>
+        </section>
+
+        <section class="view" data-view="profile">
+          <div class="placeholder">
+            <h2 class="placeholder__title">Профиль и настройки</h2>
+            <p class="placeholder__text">
+              Позже здесь появятся персональные настройки, переключатели тем и качества стриминга.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app__footer">
+        <nav class="nav">
+          <button
+            class="nav-item"
+            type="button"
+            data-view-target="saved"
+            data-lottie="/static/animations/saved.json"
+          >
+            <span class="nav-item__icon"></span>
+            <span class="nav-item__label">Избранное</span>
+          </button>
+          <button
+            class="nav-item nav-item--primary nav-item--active"
+            type="button"
+            data-view-target="search"
+            data-lottie="/static/animations/search.json"
+          >
+            <span class="nav-item__icon"></span>
+            <span class="nav-item__label">Поиск</span>
+          </button>
+          <button
+            class="nav-item"
+            type="button"
+            data-view-target="profile"
+            data-lottie="/static/animations/profile.json"
+          >
+            <span class="nav-item__icon"></span>
+            <span class="nav-item__label">Профиль</span>
+          </button>
+        </nav>
+        <p class="app__license">
+          Анимации защищены авторским правом. Укажи здесь лицензию твоего пакета JSON.
+        </p>
+      </footer>
+    </div>
+
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>
