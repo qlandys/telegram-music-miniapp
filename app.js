@@ -268,8 +268,6 @@ function initNavigation() {
         tg?.MainButton.hide();
       }
     });
-
-    item.addEventListener("mouseenter", () => playNavAnimation(target));
   });
 
   setView(state.view);
