@@ -1,8 +1,11 @@
 const tg = window.Telegram?.WebApp;
+
 const NAV_FALLBACK_ICONS = {
-  saved: "📁",
+  home: "🏠",
+  history: "🕑",
   search: "🔍",
-  profile: "⚙",
+  collection: "📁",
+  profile: "👤",
 };
 
 const navAnimations = new Map();
@@ -10,7 +13,7 @@ const navAnimations = new Map();
 const state = {
   user: tg?.initDataUnsafe?.user ?? null,
   results: [],
-  view: "search",
+  view: "home",
 };
 
 function initTelegramUI() {
@@ -82,7 +85,7 @@ function highlightSelection() {
       (item) => item.id === card.dataset.trackId && item.isActive,
     );
     card.style.borderColor = isActive
-      ? "rgba(255, 77, 102, 0.75)"
+      ? "rgba(255, 77, 102, 0.8)"
       : "rgba(255, 255, 255, 0.06)";
   });
 }
@@ -108,6 +111,9 @@ function updateMainButton() {
 
 function renderResults() {
   const container = document.getElementById("results");
+  if (!container) {
+    return;
+  }
   container.innerHTML = "";
 
   if (!state.results.length) {
@@ -174,6 +180,10 @@ function wireEvents() {
   const input = document.getElementById("query");
   const button = document.getElementById("searchButton");
 
+  if (!input || !button) {
+    return;
+  }
+
   const search = () => mockSearch(input.value);
 
   button.addEventListener("click", search);
@@ -223,8 +233,10 @@ function setView(view) {
       navItem.classList.toggle("nav-item--active", isActive);
     });
   playNavAnimation(view);
-  if (view !== "search" && tg) {
-    tg.MainButton.hide();
+  if (view === "search") {
+    updateMainButton();
+  } else {
+    tg?.MainButton.hide();
   }
 }
 
@@ -234,6 +246,7 @@ function initNavigation() {
     const target = item.dataset.viewTarget;
     const iconContainer = item.querySelector(".nav-item__icon");
     const lottieSrc = item.dataset.lottie;
+
     if (window.lottie && lottieSrc) {
       try {
         const animation = window.lottie.loadAnimation({
@@ -262,11 +275,6 @@ function initNavigation() {
 
     item.addEventListener("click", () => {
       setView(target);
-      if (target === "search") {
-        updateMainButton();
-      } else {
-        tg?.MainButton.hide();
-      }
     });
   });
 

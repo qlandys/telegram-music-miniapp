@@ -32,6 +32,7 @@ body {
   align-items: stretch;
   padding: 32px 20px;
   box-sizing: border-box;
+  font-family: "Inter", "Manrope", "Segoe UI", Tahoma, sans-serif;
 }
 
 .app {
@@ -231,6 +232,11 @@ body {
   align-items: center;
 }
 
+.placeholder--card {
+  width: 100%;
+  padding: 28px 24px;
+}
+
 .placeholder__title {
   margin: 0;
   font-size: 1.2rem;
@@ -259,64 +265,62 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
 }
 
 .nav-item {
   position: relative;
   border: none;
   border-radius: 16px;
-  padding: 10px 12px;
+  padding: 8px 6px;
   background: rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   cursor: pointer;
   color: inherit;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.04);
   min-width: 0;
-  width: 72px;
+  width: 56px;
 }
 
 .nav-item__icon {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .nav-item__fallback {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .nav-item__label {
   margin-top: 2px;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .nav-item--primary {
   justify-content: center;
-  width: 76px;
-  height: 76px;
-  padding: 0;
-  border-radius: 50%;
+  padding: 12px 10px;
+  border-radius: 18px;
   background: radial-gradient(circle at 30% 30%, rgba(255, 163, 182, 0.9), rgba(255, 77, 102, 0.95));
-  box-shadow: 0 20px 42px rgba(255, 77, 102, 0.58);
-  transform: translateY(-14px);
+  box-shadow: 0 16px 34px rgba(255, 77, 102, 0.5);
+  transform: translateY(-10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .nav-item--primary .nav-item__icon {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
 }
 
 .nav-item--primary .nav-item__label {
@@ -368,13 +372,12 @@ body {
   }
 
   .nav-item {
-    width: 64px;
-    padding: 8px 8px;
+    width: 52px;
+    padding: 6px;
   }
 
   .nav-item--primary {
-    width: 64px;
-    height: 64px;
-    transform: translateY(-12px);
+    padding: 10px 8px;
+    transform: translateY(-10px);
   }
 }
