@@ -258,9 +258,12 @@ function renderCategoryTabs() {
     }
     const count = state.categories[category]?.length ?? 0;
     button.textContent = count ? `${CATEGORY_LABELS[category]} · ${count}` : CATEGORY_LABELS[category];
-    button.disabled = !count;
+    if (!count) {
+      button.classList.add("category-chip--empty");
+    }
     button.addEventListener("click", () => {
       state.activeCategory = category;
+      state.errorMessage = "";
       renderCategoryTabs();
       renderResults();
     });
@@ -460,3 +463,5 @@ function bootstrap() {
 }
 
 bootstrap();
+
+
