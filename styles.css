@@ -247,62 +247,65 @@ body {
 
 .app__footer {
   margin-top: auto;
-  padding: 12px 20px 16px;
+  padding: 14px 20px 18px;
   background: var(--footer-bg);
   border-top: 1px dashed rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 12px;
 }
 
 .nav {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 12px;
+  gap: 18px;
 }
 
 .nav-item {
   position: relative;
   border: none;
-  border-radius: 14px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   cursor: pointer;
   color: inherit;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.04);
   min-width: 0;
-  width: 64px;
-  height: 64px;
+  width: 72px;
 }
 
 .nav-item__icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .nav-item__fallback {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
 }
 
 .nav-item__label {
-  display: none;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .nav-item--primary {
   justify-content: center;
-  width: 78px;
-  height: 78px;
+  width: 76px;
+  height: 76px;
   padding: 0;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, rgba(255, 163, 182, 0.9), rgba(255, 77, 102, 0.95));
@@ -316,6 +319,10 @@ body {
   height: 36px;
 }
 
+.nav-item--primary .nav-item__label {
+  display: none;
+}
+
 .nav-item--active:not(.nav-item--primary) {
   background: rgba(255, 77, 102, 0.2);
   border-color: rgba(255, 77, 102, 0.38);
@@ -327,8 +334,8 @@ body {
 }
 
 .nav-item:not(.nav-item--primary):hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .app__license {
@@ -357,17 +364,17 @@ body {
   }
 
   .nav {
-    gap: 14px;
+    gap: 12px;
   }
 
   .nav-item {
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    padding: 8px 8px;
   }
 
   .nav-item--primary {
-    width: 68px;
-    height: 68px;
-    transform: translateY(-10px);
+    width: 64px;
+    height: 64px;
+    transform: translateY(-12px);
   }
 }
