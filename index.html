@@ -31,7 +31,7 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">Главная панель</h2>
             <p class="placeholder__text">
-              Здесь появятся подборки и подсказки, чтобы быстро запускать музыку и возвращаться к недавним находкам.
+              Здесь будут подборки и подсказки, чтобы быстро запускать музыку и возвращаться к недавним находкам.
             </p>
           </div>
         </section>
@@ -40,7 +40,7 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">История</h2>
             <p class="placeholder__text">
-              Покажем треки, которые ты недавно слушал. Один тап — и музыка снова играет.
+              Все треки, которые ты запускал, будут под рукой. Один тап — и музыка снова играет.
             </p>
           </div>
         </section>
@@ -60,10 +60,17 @@
             </div>
           </section>
 
+          <section class="categories" id="categories"></section>
+
           <section class="results" id="results">
             <p class="results__placeholder">
               Здесь появятся результаты поиска. Выбери трек, чтобы отправить его боту.
             </p>
+          </section>
+
+          <section class="preview" id="previewContainer">
+            <p class="preview__title" id="previewTitle"></p>
+            <audio id="previewPlayer" class="preview__player" controls preload="none"></audio>
           </section>
         </section>
 
@@ -71,7 +78,7 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">Коллекция</h2>
             <p class="placeholder__text">
-              Добавляй любимые треки в избранное и создавай свои подборки. Мы сохраним их здесь.
+              Добавляй любимые треки в свои подборки. Здесь соберём плейлисты и сохранённые релизы.
             </p>
           </div>
         </section>
@@ -80,7 +87,7 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">Профиль</h2>
             <p class="placeholder__text">
-              Позже добавим персональные настройки, тему и выбор качества стриминга.
+              Позже добавим персональные настройки, выбор тем и качества стриминга.
             </p>
           </div>
         </section>
@@ -88,21 +95,11 @@
 
       <footer class="app__footer">
         <nav class="nav">
-          <button
-            class="nav-item"
-            type="button"
-            data-view-target="home"
-            data-lottie="./animations/home.json"
-          >
+          <button class="nav-item" type="button" data-view-target="home" data-lottie="./animations/home.json">
             <span class="nav-item__icon"></span>
             <span class="nav-item__label">Главная</span>
           </button>
-          <button
-            class="nav-item"
-            type="button"
-            data-view-target="history"
-            data-lottie="./animations/story.json"
-          >
+          <button class="nav-item" type="button" data-view-target="history" data-lottie="./animations/story.json">
             <span class="nav-item__icon"></span>
             <span class="nav-item__label">История</span>
           </button>
@@ -137,6 +134,9 @@
       </footer>
     </div>
 
+    <script>
+      window.APP_CONFIG = window.APP_CONFIG || { apiBaseUrl: "http://localhost:8001" };
+    </script>
     <script src="./app.js" type="module"></script>
   </body>
 </html>

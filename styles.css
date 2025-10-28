@@ -1,4 +1,13 @@
 @font-face {
+  .categories {
+    gap: 6px;
+  }
+
+  .category-chip {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
+  }
+
   font-family: "Inter";
   src: url("./font/Inter-VariableFont_opsz,wght.ttf") format("truetype");
   font-display: swap;
@@ -118,6 +127,41 @@ body {
   align-items: center;
 }
 
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-chip {
+  border: none;
+  border-radius: 16px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-chip:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.category-chip:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.category-chip--active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(255, 77, 102, 0.3);
+}
+
 .search__input {
   padding: 14px 16px;
   border-radius: var(--radius);
@@ -177,6 +221,7 @@ body {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.06);
   transition: border 0.2s ease, background 0.2s ease;
+  cursor: pointer;
 }
 
 .track-card__cover {
@@ -205,19 +250,45 @@ body {
   font-size: 0.85rem;
 }
 
-.track-card__button {
-  border: none;
-  background: rgba(255, 77, 102, 0.18);
-  color: white;
-  padding: 10px 16px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.15s ease;
+.track-card__actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
 }
 
-.track-card__button:hover {
-  background: rgba(255, 77, 102, 0.42);
+.track-card__action {
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.track-card__action--listen {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.track-card__action--listen:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.track-card__action--send {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(255, 77, 102, 0.35);
+}
+
+.track-card__action--send:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(255, 77, 102, 0.4);
+}
+
+.track-card--active {
+  border-color: rgba(255, 77, 102, 0.7);
+  background: rgba(255, 77, 102, 0.08);
 }
 
 .placeholder {
@@ -249,6 +320,32 @@ body {
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: 420px;
+}
+
+.preview {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preview--visible {
+  display: flex;
+}
+
+.preview__title {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+.preview__player {
+  width: 100%;
 }
 
 .app__footer {
@@ -365,6 +462,15 @@ body {
 
   .search__button {
     width: 100%;
+  }
+
+  .categories {
+    gap: 6px;
+  }
+
+  .category-chip {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
   }
 
   .nav {
