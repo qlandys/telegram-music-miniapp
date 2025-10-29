@@ -4,19 +4,19 @@ const API_BASE_URL = (APP_CONFIG.apiBaseUrl || "http://localhost:8001").replace(
 
 const CATEGORY_ORDER = ["top", "tracks", "artists", "podcasts", "audiobooks"];
 const CATEGORY_LABELS = {
-  top: "РўРѕРї",
-  tracks: "РўСЂРµРєРё",
-  artists: "РСЃРїРѕР»РЅРёС‚РµР»Рё",
-  podcasts: "РџРѕРґРєР°СЃС‚С‹",
-  audiobooks: "РђСѓРґРёРѕРєРЅРёРіРё",
+  top: "ТОП",
+  tracks: "Треки",
+  artists: "Исполнители",
+  podcasts: "Подкасты",
+  audiobooks: "Аудиокниги",
 };
 
 const NAV_FALLBACK_ICONS = {
-  home: "рџЏ ",
-  history: "рџ•‘",
-  search: "рџ”Ќ",
-  collection: "рџ“Ѓ",
-  profile: "рџ‘¤",
+  home: "🏠",
+  history: "🕘",
+  search: "🔍",
+  collection: "❤️",
+  profile: "👤",
 };
 
 const navAnimations = new Map();
@@ -170,7 +170,7 @@ function buildCategoryItem(item) {
     const listenButton = document.createElement("button");
     listenButton.type = "button";
     listenButton.className = "track-card__action track-card__action--listen";
-    listenButton.textContent = "РЎР»СѓС€Р°С‚СЊ";
+    listenButton.textContent = "Слушать";
     listenButton.addEventListener("click", (event) => {
       event.stopPropagation();
       playPreview(item);
@@ -179,7 +179,7 @@ function buildCategoryItem(item) {
     const sendButton = document.createElement("button");
     sendButton.type = "button";
     sendButton.className = "track-card__action track-card__action--send";
-    sendButton.textContent = "Р‘РѕС‚Сѓ";
+    sendButton.textContent = "Боту";
     sendButton.addEventListener("click", (event) => {
       event.stopPropagation();
       selectTrack(item.id);
@@ -217,7 +217,7 @@ function renderResults() {
   if (state.isSearching) {
     const loading = document.createElement("p");
     loading.className = "results__placeholder";
-    loading.textContent = "РС‰РµРј С‚СЂРµРєРё...";
+    loading.textContent = "Ищем треки...";
     container.appendChild(loading);
     return;
   }
@@ -375,9 +375,7 @@ function greetUser() {
     return;
   }
   const subtitle = document.querySelector(".app__subtitle");
-  subtitle.textContent = `РџСЂРёРІРµС‚, ${
-    state.user.first_name ?? state.user.username ?? "РґСЂСѓРі"
-  }! РќР°Р№РґРё С‚СЂРµРє Рё РѕС‚РїСЂР°РІСЊ РµРіРѕ Р±РѕС‚Сѓ.`;
+  subtitle.textContent = `Привет, ${state.user.first_name ?? state.user.username ?? "друг"}! Найди трек и отправь его боту.`;
 }
 
 function playNavAnimation(target) {
@@ -443,7 +441,7 @@ function initNavigation() {
     } else {
       const fallback = document.createElement("span");
       fallback.className = "nav-item__fallback";
-      fallback.textContent = NAV_FALLBACK_ICONS[target] ?? "вЂў";
+      fallback.textContent = NAV_FALLBACK_ICONS[target] ?? "•";
       iconContainer.appendChild(fallback);
     }
 
