@@ -452,7 +452,13 @@ body {
 }
 
 .app__license {
-  display: none;
+  margin-top: 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
 @media (max-width: 480px) {

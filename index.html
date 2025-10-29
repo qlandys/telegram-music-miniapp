@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Музыкальное мини-приложение</title>
+    <title>ShahMusic · мини-плеер</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,15 +21,15 @@
           <div class="app__logo" aria-hidden="true">&#9835;</div>
           <div class="app__headline">
             <h1 class="app__title">Музыка из YouTube</h1>
-            <p class="app__subtitle">Найди трек и моментально отправь его боту.</p>
+            <p class="app__subtitle">Слушай любимые треки напрямую из YouTube Music — прямо в Telegram.</p>
           </div>
         </header>
 
         <section class="view view--active" data-view="home">
           <div class="placeholder placeholder--card">
-            <h2 class="placeholder__title">Главная панель</h2>
+            <h2 class="placeholder__title">Что здесь есть</h2>
             <p class="placeholder__text">
-              Здесь будут подборки и подсказки, чтобы быстро запускать музыку и возвращаться к недавним находкам.
+              Ищи музыку по названию, артисту или вставляй ссылку из YouTube — поток запустится без ожидания загрузки.
             </p>
           </div>
         </section>
@@ -38,23 +38,23 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">История</h2>
             <p class="placeholder__text">
-              Все треки, которые ты запускал, будут под рукой. Один тап — и музыка снова играет.
+              Здесь появится список последних треков. Как только начнёшь слушать — мы всё аккуратно сохраним.
             </p>
           </div>
         </section>
 
         <section class="view" data-view="search">
           <section class="search">
-            <label class="search__label" for="query">Что включаем?</label>
+            <label class="search__label" for="query">Что ищем?</label>
             <div class="search__bar">
               <input
                 id="query"
                 class="search__input"
                 type="text"
-                placeholder="Например, Скриптонит — Положение"
+                placeholder="Название трека, артист или ссылка из YouTube"
                 autocomplete="off"
               />
-              <button id="searchButton" class="search__button">Найти</button>
+              <button id="searchButton" class="search__button">Искать</button>
             </div>
           </section>
 
@@ -62,7 +62,7 @@
 
           <section class="results" id="results">
             <p class="results__placeholder">
-              Здесь появятся результаты поиска. Выбери трек, чтобы отправить его боту.
+              Введи запрос, чтобы увидеть подборку музыки.
             </p>
           </section>
 
@@ -74,9 +74,9 @@
 
         <section class="view" data-view="collection">
           <div class="placeholder placeholder--card">
-            <h2 class="placeholder__title">Коллекция</h2>
+            <h2 class="placeholder__title">Избранное</h2>
             <p class="placeholder__text">
-              Добавляй любимые треки в свои подборки. Здесь соберём плейлисты и сохранённые релизы.
+              Вскоре здесь можно будет сохранять любимые треки и плейлисты, чтобы возвращаться к ним одним нажатием.
             </p>
           </div>
         </section>
@@ -85,7 +85,7 @@
           <div class="placeholder placeholder--card">
             <h2 class="placeholder__title">Профиль</h2>
             <p class="placeholder__text">
-              Позже добавим персональные настройки, выбор тем и качества стриминга.
+              Скоро добавим настройки качества, язык интерфейса и связь с аккаунтом бота.
             </p>
           </div>
         </section>
@@ -117,7 +117,7 @@
             data-lottie="./animations/saved.json"
           >
             <span class="nav-item__icon"></span>
-            <span class="nav-item__label">Сборник</span>
+            <span class="nav-item__label">Избранное</span>
           </button>
           <button
             class="nav-item"
@@ -129,6 +129,7 @@
             <span class="nav-item__label">Профиль</span>
           </button>
         </nav>
+        <small class="app__license">Анимации: LottieFiles (CC BY 4.0).</small>
       </footer>
     </div>
 

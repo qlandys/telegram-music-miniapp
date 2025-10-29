@@ -4,19 +4,19 @@ const API_BASE_URL = (APP_CONFIG.apiBaseUrl || "http://localhost:8001").replace(
 
 const CATEGORY_ORDER = ["top", "tracks", "artists", "podcasts", "audiobooks"];
 const CATEGORY_LABELS = {
-  top: "ТОП",
+  top: "Популярное",
   tracks: "Треки",
-  artists: "Исполнители",
+  artists: "Артисты",
   podcasts: "Подкасты",
   audiobooks: "Аудиокниги",
 };
 
 const NAV_FALLBACK_ICONS = {
-  home: "🏠",
-  history: "🕘",
-  search: "🔍",
-  collection: "❤️",
-  profile: "👤",
+  home: "⌂",
+  history: "↺",
+  search: "⌕",
+  collection: "★",
+  profile: "☺",
 };
 
 const navAnimations = new Map();
@@ -47,20 +47,23 @@ function initTelegramUI() {
   if (!tg) {
     return;
   }
+
   tg.expand();
   tg.MainButton.setParams({
-    text: "Отправить выбранный трек",
+    text: "Добавить выбранный трек",
     is_visible: false,
   });
+
   tg.onEvent("mainButtonClicked", () => {
     const active = findSelectedTrack();
-    if (active) {
-      tg.sendData(JSON.stringify({ trackId: active.id }));
-      tg.showPopup({
-        title: "Отправлено боту",
-        message: `Песня «${active.title}» отправлена.`,
-      });
+    if (!active) {
+      return;
     }
+    tg.sendData(JSON.stringify({ trackId: active.id }));
+    tg.showPopup({
+      title: "Готово",
+      message: `Трек «${active.title}» отправлен.`,
+    });
   });
 }
 
@@ -92,18 +95,16 @@ function clearPreview() {
 }
 
 function playPreview(track) {
-  if (!previewContainer || !previewPlayer) {
-    return;
-  }
-  if (!track.streamUrl) {
+  if (!previewContainer || !previewPlayer || !track?.streamUrl) {
     return;
   }
   if (state.view !== "search") {
     setView("search");
   }
   previewPlayer.pause();
-  previewTitle.textContent = `РЎРµР№С‡Р°СЃ РёРіСЂР°РµС‚: ${track.title}`;
+  previewTitle.textContent = `Предпрослушивание: ${track.title}`;
   previewContainer.classList.add("preview--visible");
+
   const absoluteUrl = track.streamUrl.startsWith("http")
     ? track.streamUrl
     : `${API_BASE_URL}${track.streamUrl}`;
@@ -127,119 +128,20 @@ function updateMainButton() {
   }
   const active = findSelectedTrack();
   if (active) {
-    tg.MainButton.setParams({
-      text: `РћС‚РїСЂР°РІРёС‚СЊ: ${active.title}`,
-      is_visible: true,
-    });
+    tg.MainButton.setParams({ text: "Добавить выбранный трек", is_visible: true });
   } else {
     tg.MainButton.hide();
   }
 }
 
-function buildCategoryItem(item) {
-  const wrapper = document.createElement("article");
-  wrapper.className = "track-card";
-  wrapper.dataset.trackId = item.id;
-
-  const cover = document.createElement("img");
-  cover.className = "track-card__cover";
-  cover.alt = item.title;
-  cover.src = item.thumbnail || "https://i.ytimg.com/vi_webp/default.jpg";
-
-  const info = document.createElement("div");
-  info.className = "track-card__info";
-
-  const title = document.createElement("h2");
-  title.className = "track-card__title";
-  title.textContent = item.title;
-
-  const meta = document.createElement("p");
-  meta.className = "track-card__meta";
-  const metaParts = [];
-  if (item.subtitle) metaParts.push(item.subtitle);
-  if (item.durationLabel) metaParts.push(item.durationLabel);
-  meta.textContent = metaParts.join(" В· ");
-
-  info.append(title, meta);
-  wrapper.append(cover, info);
-
-  if (item.streamUrl) {
-    const actions = document.createElement("div");
-    actions.className = "track-card__actions";
-
-    const listenButton = document.createElement("button");
-    listenButton.type = "button";
-    listenButton.className = "track-card__action track-card__action--listen";
-    listenButton.textContent = "Слушать";
-    listenButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      playPreview(item);
-    });
-
-    const sendButton = document.createElement("button");
-    sendButton.type = "button";
-    sendButton.className = "track-card__action track-card__action--send";
-    sendButton.textContent = "Боту";
-    sendButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      selectTrack(item.id);
-    });
-
-    actions.append(listenButton, sendButton);
-    wrapper.append(actions);
-  }
-
-  wrapper.addEventListener("click", () => {
-    if (item.streamUrl) {
-      selectTrack(item.id);
-    }
-  });
-
-  if (item.id === state.selectedTrackId) {
-    wrapper.classList.add("track-card--active");
-  }
-
-  return wrapper;
-}
-
-function renderResults() {
-  const container = document.getElementById("results");
-  if (!container) {
-    return;
-  }
-  container.innerHTML = "";
-
-  if (state.view !== "search") {
-    clearPreview();
-    return;
-  }
-
-  if (state.isSearching) {
-    const loading = document.createElement("p");
-    loading.className = "results__placeholder";
-    loading.textContent = "Ищем треки...";
-    container.appendChild(loading);
-    return;
-  }
-
-  if (state.errorMessage) {
-    const error = document.createElement("p");
-    error.className = "results__placeholder";
-    error.textContent = state.errorMessage;
-    container.appendChild(error);
-    return;
-  }
-
-  const currentItems = state.categories[state.activeCategory] || [];
-  if (!currentItems.length) {
-    const empty = document.createElement("p");
-    empty.className = "results__placeholder";
-    empty.textContent = "Р—РґРµСЃСЊ РїРѕСЏРІСЏС‚СЃСЏ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІС‹Р±СЂР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё.";
-    container.appendChild(empty);
-    return;
-  }
-
-  currentItems.forEach((item) => container.appendChild(buildCategoryItem(item)));
+function clearCategories() {
+  state.categories = {
+    top: [],
+    tracks: [],
+    artists: [],
+    podcasts: [],
+    audiobooks: [],
+  };
 }
 
 function renderCategoryTabs() {
@@ -257,7 +159,7 @@ function renderCategoryTabs() {
       button.classList.add("category-chip--active");
     }
     const count = state.categories[category]?.length ?? 0;
-    button.textContent = count ? `${CATEGORY_LABELS[category]} В· ${count}` : CATEGORY_LABELS[category];
+    button.textContent = count ? `${CATEGORY_LABELS[category]} · ${count}` : CATEGORY_LABELS[category];
     if (!count) {
       button.classList.add("category-chip--empty");
     }
@@ -271,20 +173,117 @@ function renderCategoryTabs() {
   });
 }
 
-function clearCategories() {
-  state.categories = {
-    top: [],
-    tracks: [],
-    artists: [],
-    podcasts: [],
-    audiobooks: [],
-  };
+function renderResults() {
+  const container = document.getElementById("results");
+  if (!container) {
+    return;
+  }
+  container.innerHTML = "";
+
+  if (state.view !== "search") {
+    clearPreview();
+    return;
+  }
+
+  if (state.isSearching) {
+    const loading = document.createElement("p");
+    loading.className = "results__placeholder";
+    loading.textContent = "Ищем музыку...";
+    container.appendChild(loading);
+    return;
+  }
+
+  if (state.errorMessage) {
+    const error = document.createElement("p");
+    error.className = "results__placeholder";
+    error.textContent = state.errorMessage;
+    container.appendChild(error);
+    return;
+  }
+
+  const currentItems = state.categories[state.activeCategory] || [];
+  if (!currentItems.length) {
+    const empty = document.createElement("p");
+    empty.className = "results__placeholder";
+    empty.textContent = "Тут пока пусто. Попробуйте другой запрос.";
+    container.appendChild(empty);
+    return;
+  }
+
+  currentItems.forEach((item) => container.appendChild(buildCategoryItem(item)));
+}
+
+function buildCategoryItem(item) {
+  const element = document.createElement("article");
+  element.className = "result-item";
+
+  const artwork = document.createElement("div");
+  artwork.className = "result-item__artwork";
+  if (item.thumbnail) {
+    const img = document.createElement("img");
+    img.src = item.thumbnail;
+    img.alt = item.title ?? "";
+    artwork.appendChild(img);
+  } else {
+    artwork.textContent = "♪";
+  }
+
+  const body = document.createElement("div");
+  body.className = "result-item__body";
+
+  const title = document.createElement("h3");
+  title.className = "result-item__title";
+  title.textContent = item.title || "Без названия";
+
+  const subtitle = document.createElement("p");
+  subtitle.className = "result-item__subtitle";
+  subtitle.textContent = item.subtitle || "";
+
+  const meta = document.createElement("div");
+  meta.className = "result-item__meta";
+  if (item.durationLabel) {
+    const duration = document.createElement("span");
+    duration.textContent = item.durationLabel;
+    meta.appendChild(duration);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "result-item__actions";
+
+  const previewButton = document.createElement("button");
+  previewButton.type = "button";
+  previewButton.className = "result-item__button";
+  previewButton.textContent = "▶";
+  previewButton.addEventListener("click", () => {
+    selectTrack(item.id);
+    playPreview(item);
+  });
+
+  actions.appendChild(previewButton);
+  body.appendChild(title);
+  if (subtitle.textContent) {
+    body.appendChild(subtitle);
+  }
+  if (meta.children.length) {
+    body.appendChild(meta);
+  }
+
+  element.appendChild(artwork);
+  element.appendChild(body);
+  element.appendChild(actions);
+
+  if (item.id === state.selectedTrackId) {
+    element.classList.add("result-item--selected");
+  }
+
+  return element;
 }
 
 async function performSearch(rawQuery) {
   const query = rawQuery.trim();
   state.selectedTrackId = null;
   clearPreview();
+
   if (!query) {
     clearCategories();
     state.errorMessage = "";
@@ -321,7 +320,7 @@ async function performSearch(rawQuery) {
   } catch (error) {
     if (error.name !== "AbortError") {
       console.error("Search failed", error);
-      state.errorMessage = "РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ РїРѕРёСЃРє. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·.";
+      state.errorMessage = "Не получилось найти треки. Попробуйте ещё раз.";
       clearCategories();
     }
   } finally {
@@ -341,7 +340,7 @@ function convertSearchResponse(payload) {
       .map((item) => ({
         id: item.id,
         type: item.type || "track",
-        title: item.title || "Р‘РµР· РЅР°Р·РІР°РЅРёСЏ",
+        title: item.title || "Без названия",
         subtitle: item.subtitle || null,
         thumbnail: item.thumbnail || null,
         durationLabel: item.durationSeconds ? formatDuration(item.durationSeconds) : item.duration || null,
@@ -351,7 +350,7 @@ function convertSearchResponse(payload) {
   const firstNonEmpty = CATEGORY_ORDER.find((category) => state.categories[category].length);
   state.activeCategory = firstNonEmpty || "top";
   if (!firstNonEmpty) {
-    state.errorMessage = "РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.";
+    state.errorMessage = "Ничего не найдено.";
   }
 }
 
@@ -375,7 +374,10 @@ function greetUser() {
     return;
   }
   const subtitle = document.querySelector(".app__subtitle");
-  subtitle.textContent = `Привет, ${state.user.first_name ?? state.user.username ?? "друг"}! Найди трек и отправь его боту.`;
+  if (!subtitle) {
+    return;
+  }
+  subtitle.textContent = `Привет, ${state.user.first_name ?? state.user.username ?? "друг"}! Здесь можно слушать музыку из YouTube.`;
 }
 
 function playNavAnimation(target) {
@@ -399,9 +401,8 @@ function setView(view) {
     .forEach((section) => section.classList.toggle("view--active", section.dataset.view === view));
   document
     .querySelectorAll("[data-view-target]")
-    .forEach((navItem) => {
-      navItem.classList.toggle("nav-item--active", navItem.dataset.viewTarget === view);
-    });
+    .forEach((navItem) => navItem.classList.toggle("nav-item--active", navItem.dataset.viewTarget === view));
+
   playNavAnimation(view);
   if (view === "search") {
     renderCategoryTabs();
@@ -419,7 +420,7 @@ function initNavigation() {
     const iconContainer = item.querySelector(".nav-item__icon");
     const lottieSrc = item.dataset.lottie;
 
-    if (window.lottie && lottieSrc) {
+    if (window.lottie && lottieSrc && iconContainer) {
       try {
         const animation = window.lottie.loadAnimation({
           container: iconContainer,
@@ -436,12 +437,12 @@ function initNavigation() {
         });
         navAnimations.set(target, animation);
       } catch (error) {
-        console.warn("РќРµ СѓРґР°Р»РѕСЃСЊ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ Р°РЅРёРјР°С†РёСЋ:", error);
+        console.warn("Не удалось воспроизвести анимацию навигации:", error);
       }
-    } else {
+    } else if (iconContainer) {
       const fallback = document.createElement("span");
       fallback.className = "nav-item__fallback";
-      fallback.textContent = NAV_FALLBACK_ICONS[target] ?? "•";
+      fallback.textContent = NAV_FALLBACK_ICONS[target] ?? "?";
       iconContainer.appendChild(fallback);
     }
 
@@ -461,5 +462,3 @@ function bootstrap() {
 }
 
 bootstrap();
-
-
